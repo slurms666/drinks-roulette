@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="A Pebbs.app retro game hub inspired by early mobile phone gaming, built as a static HTML5 canvas site."
+  >
+  <title>3310 Game Hub | Pebbs.app</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient-layer" aria-hidden="true"></div>
+  <div class="page-shell">
+    <header class="hero-bar">
+      <div class="hero-copy">
+        <p class="eyebrow">Pebbs Retro Lab</p>
+        <h1>3310 Game Hub</h1>
+        <p class="hero-text">
+          A standalone browser tribute to monochrome handheld gaming, rendered with original
+          canvas games, CSS phone chrome, and simple synth bleeps.
+        </p>
+      </div>
+      <button id="sound-toggle" class="sound-toggle" type="button" aria-pressed="false">
+        Sound: On
+      </button>
+    </header>
+
+    <main class="layout">
+      <section class="phone-stage" aria-label="Retro phone interface">
+        <div class="phone-body">
+          <div class="phone-top">
+            <span class="brand-pill">PEBBS</span>
+            <span class="brand-mark">3310.pebbs.app</span>
+          </div>
+
+          <div class="speaker" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="screen-bezel">
+            <div class="screen-status">
+              <span id="screen-title">Phone Menu</span>
+              <span id="screen-meta">Idle</span>
+            </div>
+
+            <div class="screen-shell">
+              <div class="screen-glass">
+                <canvas id="game-canvas" width="320" height="240" class="hidden" aria-label="Game canvas"></canvas>
+                <section id="panel-view" class="panel-view" aria-live="polite"></section>
+                <div id="overlay-view" class="overlay-view hidden" aria-live="assertive"></div>
+              </div>
+            </div>
+
+            <div class="softkey-strip">
+              <span id="footer-left">Arrows move</span>
+              <span id="footer-center">Enter select</span>
+              <span id="footer-right">Esc back</span>
+            </div>
+          </div>
+
+          <div class="phone-bottom">
+            <div class="nav-cluster" aria-hidden="true">
+              <span class="nav-key nav-up"></span>
+              <span class="nav-key nav-left"></span>
+              <span class="nav-key nav-center"></span>
+              <span class="nav-key nav-right"></span>
+              <span class="nav-key nav-down"></span>
+            </div>
+
+            <div class="num-pad" aria-hidden="true">
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+              <span>6</span>
+              <span>7</span>
+              <span>8</span>
+              <span>9</span>
+              <span>*</span>
+              <span>0</span>
+              <span>#</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <section class="info-card">
+          <p class="eyebrow">Current screen</p>
+          <h2 id="info-title">Phone Menu</h2>
+          <p id="info-copy" class="info-copy">
+            Start inside the phone menu, jump into the games shelf, and control everything with the keyboard.
+          </p>
+          <ul id="info-list" class="info-list"></ul>
+        </section>
+
+        <section class="info-card">
+          <p class="eyebrow">Global controls</p>
+          <ul class="control-list">
+            <li><strong>Arrows</strong> navigate menus and move in games</li>
+            <li><strong>Enter</strong> confirm, launch, or use the primary action</li>
+            <li><strong>Space</strong> secondary action in games that need one</li>
+            <li><strong>Escape / Backspace</strong> close screens or quit back to the menu</li>
+            <li><strong>M</strong> mute or unmute at any time</li>
+            <li><strong>R</strong> restart the current game</li>
+            <li><strong>I</strong> reopen the game help overlay on demand</li>
+          </ul>
+        </section>
+
+        <section class="info-card compact">
+          <p class="eyebrow">Project note</p>
+          <p>
+            This is an original Pebbs.app tribute inspired by early mobile gaming culture. It is not an official Nokia
+            product and does not use official artwork, sprites, or code.
+          </p>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="site-footer">
+      A retro project by <a href="https://pebbs.app" target="_blank" rel="noreferrer">Pebbs.app</a>
+    </footer>
+  </div>
+
+  <script src="js/core.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/games/snake.js"></script>
+  <script src="js/games/shooter.js"></script>
+  <script src="js/games/mancala.js"></script>
+  <script src="js/games/memory.js"></script>
+  <script src="js/games/reaction.js"></script>
+  <script src="js/games/blocks.js"></script>
+  <script src="js/games/bounce.js"></script>
+  <script src="js/games/racer.js"></script>
+  <script src="js/games/simon.js"></script>
+  <script src="js/games/breaker.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
