@@ -82,6 +82,17 @@
     state.menuSelection[state.menuId] = index;
   }
 
+  function getMenuWindow(items, selectedIndex, maxVisible) {
+    const visibleCount = Math.min(items.length, maxVisible);
+    const half = Math.floor(visibleCount / 2);
+    const start = utils.clamp(selectedIndex - half, 0, Math.max(0, items.length - visibleCount));
+    return {
+      start,
+      end: start + visibleCount,
+      visibleCount,
+    };
+  }
+
   function phaseLabel(phase) {
     if (phase === "ready") {
       return "Ready";
@@ -157,6 +168,7 @@
     return games.map((game) => ({
       label: game.menuTitle || game.title,
       description: game.description,
+      tagline: game.tagline,
       details: [game.tagline, game.controls[0], game.controls[1]],
       action() {
         launchGame(game.id);
@@ -327,17 +339,26 @@
     updateSoundUi();
     const menu = getMenuConfig();
     const items = menu.items;
+    const isGamesMenu = state.menuId === "games";
     let selectedIndex = currentMenuIndex();
     selectedIndex = utils.clamp(selectedIndex, 0, items.length - 1);
     setCurrentMenuIndex(selectedIndex);
     const selectedItem = items[selectedIndex];
+    const menuWindow = getMenuWindow(items, selectedIndex, isGamesMenu ? 5 : items.length);
+    const visibleItems = items.slice(menuWindow.start, menuWindow.end);
+    const hasMoreAbove = menuWindow.start > 0;
+    const hasMoreBelow = menuWindow.end < items.length;
 
     canvas.classList.add("hidden");
     elements.panelView.classList.remove("hidden");
     elements.overlayView.classList.add("hidden");
 
     setStatus(menu.title, audio.isMuted() ? "Muted" : "Ready");
-    setFooter("Arrows scroll", "Enter select", state.menuId === "main" ? "M sound" : "Esc back");
+    setFooter(
+      isGamesMenu ? "Arrows browse" : "Arrows scroll",
+      isGamesMenu ? "Enter launch" : "Enter select",
+      state.menuId === "main" ? "M sound" : "Esc back"
+    );
 
     elements.panelView.innerHTML = `
       <div class="panel-shell">
@@ -346,22 +367,33 @@
           <h2 class="panel-title">${escapeHtml(menu.title)}</h2>
           <p class="panel-copy">${escapeHtml(menu.copy)}</p>
         </div>
-        <div class="menu-list">
-          ${items
+        <div class="menu-list ${isGamesMenu ? "is-compact" : ""}">
+          ${visibleItems
             .map(
               (item, index) => `
                 <button
                   type="button"
-                  class="menu-item ${index === selectedIndex ? "is-active" : ""}"
-                  data-menu-index="${index}"
+                  class="menu-item ${menuWindow.start + index === selectedIndex ? "is-active" : ""}"
+                  data-menu-index="${menuWindow.start + index}"
                 >
                   <strong>${escapeHtml(item.label)}</strong>
-                  <span>${escapeHtml(item.description)}</span>
+                  <span>${escapeHtml(isGamesMenu ? item.tagline || item.description : item.description)}</span>
                 </button>
               `
             )
             .join("")}
         </div>
+        ${
+          isGamesMenu
+            ? `
+              <div class="menu-scroll-note">
+                <span>${hasMoreAbove ? "More above" : "Top of list"}</span>
+                <span>${menuWindow.start + 1}-${menuWindow.end} / ${items.length}</span>
+                <span>${hasMoreBelow ? "More below" : "End of list"}</span>
+              </div>
+            `
+            : ""
+        }
         <div class="panel-footer">
           <span>${state.menuId === "games" ? "10 titles loaded" : "Use keyboard only"}</span>
           <span>${audio.isMuted() ? "Sound muted" : "Sound active"}</span>

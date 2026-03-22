@@ -61,8 +61,9 @@
     description: "Collect fruit, grow the body, and survive the box without turning into your own tail.",
     instructions: [
       "Guide the snake with the arrow keys.",
+      "The playfield wraps, so crossing an edge brings you back from the opposite side.",
       "Each fruit lengthens the body and nudges the speed upward.",
-      "Crash into a wall or yourself and the run ends.",
+      "Crash into yourself and the run ends.",
       "Reach 12 fruit for a clean win.",
     ],
     controls: [
@@ -118,14 +119,13 @@
 
       const head = state.snake[0];
       const nextHead = {
-        x: head.x + state.direction.x,
-        y: head.y + state.direction.y,
+        x: (head.x + state.direction.x + cols) % cols,
+        y: (head.y + state.direction.y + rows) % rows,
       };
 
-      const hitWall = nextHead.x < 0 || nextHead.x >= cols || nextHead.y < 0 || nextHead.y >= rows;
       const hitBody = state.snake.some((segment) => segment.x === nextHead.x && segment.y === nextHead.y);
 
-      if (hitWall || hitBody) {
+      if (hitBody) {
         state.phase = "gameover";
         audio.play("error");
         return;
@@ -175,7 +175,7 @@
       if (state.phase === "ready") {
         utils.drawCenteredPanel(ctx, {
           title: "Ready",
-          lines: ["Eat 12 fruit.", "Avoid the walls.", "Press Enter"],
+          lines: ["Eat 12 fruit.", "Edges wrap around.", "Press Enter"],
           footer: "Start run",
         });
       } else if (state.phase === "gameover") {
