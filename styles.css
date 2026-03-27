@@ -94,11 +94,18 @@ body::after {
 }
 
 .hero {
-  max-width: 820px;
+  max-width: 960px;
   display: grid;
-  gap: 10px;
-  margin-bottom: clamp(20px, 3.5vw, 30px);
+  gap: 8px;
+  margin-bottom: clamp(14px, 2.6vw, 22px);
   animation: rise-in 720ms ease both;
+}
+
+.hero-bar {
+  display: flex;
+  align-items: baseline;
+  gap: 10px 14px;
+  flex-wrap: wrap;
 }
 
 .eyebrow,
@@ -135,9 +142,18 @@ h1,
 }
 
 h1 {
-  font-size: clamp(3.3rem, 9vw, 6.8rem);
+  font-size: clamp(1.9rem, 5.2vw, 3.5rem);
   line-height: 0.92;
   text-transform: uppercase;
+}
+
+.hero-byline {
+  color: rgba(255, 245, 234, 0.6);
+  font-family: "Trebuchet MS", "Gill Sans", "Avenir Next Condensed", sans-serif;
+  font-size: clamp(0.74rem, 1.4vw, 0.92rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .hero-copy {
@@ -335,6 +351,7 @@ select:disabled {
   top: 50%;
   right: calc(50% - (var(--wheel-disc-size) / 2) + clamp(2px, 0.5vw, 8px));
   z-index: 3;
+  pointer-events: none;
   width: 0;
   height: 0;
   transform: translateY(-50%);
@@ -366,6 +383,17 @@ select:disabled {
     0 26px 54px rgba(0, 0, 0, 0.32);
   transition: transform 4.8s cubic-bezier(0.12, 0.82, 0.16, 1);
   will-change: transform;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.wheel-disc:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.08),
+    inset 0 0 0 22px rgba(13, 8, 11, 0.5),
+    0 0 0 2px rgba(255, 255, 255, 0.18),
+    0 26px 54px rgba(0, 0, 0, 0.32);
 }
 
 #roulette-wheel {
@@ -755,8 +783,55 @@ select:disabled {
 }
 
 @media (max-width: 760px) {
+  :root {
+    --page-gutter: 10px;
+    --wheel-stage-size: clamp(360px, 96vw, 470px);
+    --wheel-disc-size: min(100%, clamp(336px, 94vw, 470px));
+  }
+
+  .hero {
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
   .control-row {
     grid-template-columns: 1fr;
+  }
+
+  .hero-copy,
+  .hero-note {
+    display: none;
+  }
+
+  .wheel-card {
+    gap: 14px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .wheel-stage {
+    order: 1;
+    min-height: auto;
+    padding: 2px 0 6px;
+    border-radius: 0;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .control-row {
+    order: 2;
+  }
+
+  .action-row {
+    order: 3;
+  }
+
+  .wheel-footer {
+    order: 4;
+    display: none;
   }
 
   .editor-head {
@@ -801,16 +876,26 @@ select:disabled {
 
 @media (max-width: 520px) {
   h1 {
-    font-size: clamp(2.7rem, 16vw, 4rem);
+    font-size: clamp(1.55rem, 8vw, 2rem);
   }
 
   .wheel-stage {
-    min-height: clamp(280px, 88vw, 360px);
+    min-height: auto;
+    padding-top: 0;
   }
 
   .action-row .ghost-button,
   .editor-toolbar .ghost-button {
     flex-basis: 100%;
+  }
+
+  .hero-bar {
+    gap: 6px 10px;
+  }
+
+  .hero-byline {
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
   }
 
   .result-card h2 {

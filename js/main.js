@@ -786,6 +786,13 @@
     setCategory(event.target.value);
   });
   elements.spinButton.addEventListener("click", spinWheel);
+  elements.wheelDisc.addEventListener("click", spinWheel);
+  elements.wheelDisc.addEventListener("keydown", (event) => {
+    if (event.code === "Space" || event.code === "Enter") {
+      event.preventDefault();
+      spinWheel();
+    }
+  });
   elements.shuffleButton.addEventListener("click", shuffleCurrentLineup);
   elements.resetButton.addEventListener("click", resetCurrentLineup);
   elements.editButton.addEventListener("click", openEditor);

@@ -13,8 +13,10 @@
 <body data-wheel="cocktails">
   <div class="page-shell">
     <header class="hero">
-      <p class="eyebrow">House Pour</p>
-      <h1>Drinks Roulette</h1>
+      <div class="hero-bar">
+        <h1>COCKTAIL ROULETTE</h1>
+        <p class="hero-byline">designed by pebbs.app</p>
+      </div>
       <p class="hero-copy">
         Flip between a full cocktail wheel and a faster shot wheel, then let the spin decide what
         gets poured next.
@@ -46,7 +48,7 @@
 
         <div class="wheel-stage">
           <div class="pointer" aria-hidden="true"></div>
-          <div id="wheel-disc" class="wheel-disc">
+          <div id="wheel-disc" class="wheel-disc" role="button" tabindex="0" aria-label="Spin the selected drinks wheel">
             <canvas
               id="roulette-wheel"
               width="720"
