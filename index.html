@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta
     name="description"
     content="A bold drinks roulette wheel with switchable cocktail and shot menus."
@@ -19,6 +19,7 @@
         Flip between a full cocktail wheel and a faster shot wheel, then let the spin decide what
         gets poured next.
       </p>
+      <p class="hero-note">One responsive site, tuned for phone, tablet, and desktop.</p>
     </header>
 
     <main class="roulette-layout">
@@ -35,6 +36,12 @@
           <button id="spin-button" class="spin-button" type="button">
             Spin the wheel
           </button>
+        </div>
+
+        <div class="action-row">
+          <button id="shuffle-button" class="ghost-button" type="button">Shuffle drinks</button>
+          <button id="edit-button" class="ghost-button" type="button">Edit lineup</button>
+          <button id="reset-button" class="ghost-button" type="button">Reset defaults</button>
         </div>
 
         <div class="wheel-stage">
@@ -87,6 +94,27 @@
       </aside>
     </main>
   </div>
+
+  <dialog id="editor-dialog" class="editor-dialog" aria-labelledby="editor-title">
+    <div class="editor-shell">
+      <div class="editor-head">
+        <div class="editor-copy-wrap">
+          <p class="eyebrow">Customize Wheel</p>
+          <h2 id="editor-title">Edit lineup</h2>
+          <p id="editor-copy" class="editor-copy">Choose from the library or type your own drink.</p>
+        </div>
+        <button id="editor-close" class="ghost-button" type="button">Done</button>
+      </div>
+
+      <div class="editor-toolbar">
+        <button id="editor-shuffle" class="ghost-button" type="button">Shuffle drinks</button>
+        <button id="editor-reset" class="ghost-button" type="button">Reset defaults</button>
+      </div>
+
+      <ul id="editor-list" class="editor-list"></ul>
+      <p class="editor-foot">Pick from the full library for this wheel, or switch a slot to custom and type your own.</p>
+    </div>
+  </dialog>
 
   <script src="js/main.js"></script>
 </body>
