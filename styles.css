@@ -331,29 +331,21 @@ select:disabled {
 
 .pointer {
   position: absolute;
-  top: clamp(14px, 2vw, 24px);
-  left: 50%;
+  top: 50%;
+  right: clamp(8px, 2vw, 18px);
   z-index: 3;
   width: 0;
   height: 0;
-  transform: translateX(-50%);
-  border-left: clamp(14px, 2vw, 22px) solid transparent;
-  border-right: clamp(14px, 2vw, 22px) solid transparent;
-  border-top: 0;
-  border-bottom: clamp(30px, 4vw, 44px) solid var(--highlight);
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+  transform: translateY(-50%);
+  border-top: clamp(14px, 2vw, 22px) solid transparent;
+  border-bottom: clamp(14px, 2vw, 22px) solid transparent;
+  border-left: 0;
+  border-right: clamp(30px, 4vw, 44px) solid var(--highlight);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.32));
 }
 
 .pointer::after {
-  content: "";
-  position: absolute;
-  left: calc(clamp(14px, 2vw, 22px) * -0.38);
-  top: clamp(26px, 3.2vw, 38px);
-  width: clamp(12px, 1.6vw, 16px);
-  height: clamp(12px, 1.6vw, 16px);
-  border-radius: 50%;
-  background: var(--wheel-ring);
-  border: 2px solid rgba(255, 255, 255, 0.18);
+  content: none;
 }
 
 .wheel-disc {

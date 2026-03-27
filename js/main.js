@@ -186,6 +186,7 @@
   };
 
   const SPIN_DURATION_MS = 4800;
+  const POINTER_TARGET_DEGREES = 90;
   const MAX_DEVICE_PIXEL_RATIO = 2;
   const MIN_CANVAS_SIZE = 320;
   const MAX_CANVAS_SIZE = 1200;
@@ -375,6 +376,17 @@
     };
   }
 
+  function getHubTitleSize(text, maxWidth, baseFontSize, minFontSize) {
+    for (let fontSize = baseFontSize; fontSize >= minFontSize; fontSize -= 1) {
+      ctx.font = `700 ${fontSize}px "Trebuchet MS", "Gill Sans", sans-serif`;
+      if (ctx.measureText(text).width <= maxWidth) {
+        return fontSize;
+      }
+    }
+
+    return minFontSize;
+  }
+
   function drawWheel() {
     const config = getConfig();
     const lineup = getLineup();
@@ -415,7 +427,7 @@
 
       ctx.save();
       ctx.translate(x, y);
-      ctx.rotate(labelAngle + Math.PI / 2);
+      ctx.rotate(labelAngle - Math.PI / 2);
       ctx.fillStyle = "#fff7ee";
       ctx.strokeStyle = "rgba(24, 12, 19, 0.28)";
       ctx.lineWidth = Math.max(1.5 * pixelRatio, fittedLabel.fontSize * 0.08);
@@ -450,14 +462,18 @@
     ctx.strokeStyle = "rgba(14, 10, 12, 0.28)";
     ctx.stroke();
 
-    const hubTitleSize = Math.round(Math.max(18, displaySize * 0.052) * pixelRatio);
-    const hubMetaSize = Math.round(Math.max(14, displaySize * 0.04) * pixelRatio);
+    const hubText = config.label.toUpperCase();
+    const hubTitleSize = getHubTitleSize(
+      hubText,
+      innerRadius * 1.5,
+      Math.round(Math.max(20, displaySize * 0.06) * pixelRatio),
+      Math.round(Math.max(15, displaySize * 0.042) * pixelRatio)
+    );
     ctx.fillStyle = "#2a161c";
     ctx.font = `700 ${hubTitleSize}px "Trebuchet MS", "Gill Sans", sans-serif`;
     ctx.textAlign = "center";
-    ctx.fillText(config.label.toUpperCase(), 0, -hubMetaSize * 0.42);
-    ctx.font = `400 ${hubMetaSize}px Georgia, "Times New Roman", serif`;
-    ctx.fillText(`${count} drinks`, 0, hubMetaSize * 1.12);
+    ctx.textBaseline = "middle";
+    ctx.fillText(hubText, 0, 0);
     ctx.restore();
   }
 
@@ -740,7 +756,7 @@
     const winnerIndex = Math.floor(Math.random() * count);
     const sliceDegrees = 360 / count;
     const currentRotation = ((state.rotation % 360) + 360) % 360;
-    const desiredRotation = (360 - winnerIndex * sliceDegrees) % 360;
+    const desiredRotation = (POINTER_TARGET_DEGREES - winnerIndex * sliceDegrees + 360) % 360;
     let delta = desiredRotation - currentRotation;
 
     if (delta < 0) {
