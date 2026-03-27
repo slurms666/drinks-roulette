@@ -16,8 +16,8 @@
   --page-gutter: clamp(14px, 2.8vw, 28px);
   --panel-radius: clamp(22px, 3vw, 30px);
   --card-padding: clamp(18px, 2.6vw, 24px);
-  --wheel-stage-size: clamp(320px, 64vw, 620px);
-  --wheel-disc-size: min(100%, clamp(280px, 52vw, 560px));
+  --wheel-stage-size: clamp(336px, 67.2vw, 651px);
+  --wheel-disc-size: min(100%, clamp(294px, 54.6vw, 588px));
 }
 
 body[data-wheel="shots"] {
@@ -451,6 +451,61 @@ select:disabled {
   line-height: 1.65;
 }
 
+.recipe-toggle {
+  margin-top: 16px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.recipe-panel {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 34%),
+    rgba(9, 7, 11, 0.34);
+}
+
+.recipe-panel[hidden] {
+  display: none;
+}
+
+.recipe-summary {
+  color: rgba(255, 245, 234, 0.82);
+  line-height: 1.55;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.recipe-block {
+  min-width: 0;
+}
+
+.recipe-label {
+  color: var(--accent);
+  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.recipe-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.recipe-list li + li {
+  margin-top: 8px;
+}
+
 .result-meta {
   display: flex;
   flex-wrap: wrap;
@@ -786,7 +841,7 @@ select:disabled {
   :root {
     --page-gutter: 10px;
     --wheel-stage-size: clamp(360px, 96vw, 470px);
-    --wheel-disc-size: min(100%, clamp(336px, 94vw, 470px));
+    --wheel-disc-size: min(100%, clamp(353px, 98.7vw, 494px));
   }
 
   .hero {
@@ -849,6 +904,10 @@ select:disabled {
     grid-template-columns: 1fr;
   }
 
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+
   .editor-dialog {
     width: calc(100vw - 12px);
     max-height: calc(100dvh - 12px);
@@ -896,6 +955,10 @@ select:disabled {
   .hero-byline {
     font-size: 0.68rem;
     letter-spacing: 0.09em;
+  }
+
+  .recipe-toggle {
+    width: 100%;
   }
 
   .result-card h2 {

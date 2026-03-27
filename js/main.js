@@ -185,6 +185,365 @@
     shots: buildDefaultLineup("shots")
   };
 
+  function createRecipe(summary, ingredients, method) {
+    return { summary, ingredients, method };
+  }
+
+  const RECIPE_OVERRIDES = {
+    "negroni": createRecipe(
+      "Equal-parts bitter classic.",
+      ["30ml gin", "30ml Campari", "30ml sweet vermouth"],
+      [
+        "Add all ingredients to a mixing glass with ice.",
+        "Stir until properly chilled.",
+        "Strain over fresh ice in a rocks glass.",
+        "Express an orange peel over the drink and drop it in."
+      ]
+    ),
+    "old-fashioned": createRecipe(
+      "Spirit-forward and simple.",
+      ["60ml bourbon or rye", "10ml sugar syrup", "2 dashes Angostura bitters"],
+      [
+        "Add the syrup and bitters to a rocks glass.",
+        "Pour in the whiskey and stir with ice until cold.",
+        "Top with fresh ice if needed.",
+        "Garnish with an orange peel."
+      ]
+    ),
+    "margarita": createRecipe(
+      "Sharp, bright, and easy to batch.",
+      ["50ml tequila", "25ml orange liqueur", "25ml fresh lime juice"],
+      [
+        "Salt the rim of a chilled glass if you want the classic serve.",
+        "Shake all ingredients hard with ice.",
+        "Strain into the glass over fresh ice or served up.",
+        "Finish with a lime wheel."
+      ]
+    ),
+    "espresso-martini": createRecipe(
+      "Cold, rich, and shaken hard for foam.",
+      ["40ml vodka", "20ml coffee liqueur", "30ml fresh espresso", "10ml sugar syrup"],
+      [
+        "Add everything to a shaker with plenty of ice.",
+        "Shake hard until the tin is very cold and the drink foams up.",
+        "Fine strain into a chilled coupe.",
+        "Garnish with coffee beans."
+      ]
+    ),
+    "daiquiri": createRecipe(
+      "A clean rum sour.",
+      ["60ml white rum", "25ml fresh lime juice", "15ml simple syrup"],
+      [
+        "Add everything to a shaker with ice.",
+        "Shake until thoroughly chilled.",
+        "Fine strain into a chilled coupe.",
+        "Serve straight away."
+      ]
+    ),
+    "whiskey-sour": createRecipe(
+      "Classic sour with optional egg white texture.",
+      ["60ml whiskey", "30ml fresh lemon juice", "15ml simple syrup", "Optional egg white"],
+      [
+        "If using egg white, dry shake first without ice.",
+        "Add ice and shake again until cold.",
+        "Strain into a rocks glass over fresh ice or into a coupe.",
+        "Add a few drops of bitters if you like."
+      ]
+    ),
+    "dry-martini": createRecipe(
+      "Cold and direct.",
+      ["60ml gin", "10ml dry vermouth"],
+      [
+        "Stir the gin and vermouth with ice until very cold.",
+        "Strain into a chilled martini glass.",
+        "Garnish with a lemon twist or olive."
+      ]
+    ),
+    "aperol-spritz": createRecipe(
+      "A low-effort aperitivo serve.",
+      ["90ml prosecco", "60ml Aperol", "30ml soda water"],
+      [
+        "Fill a large wine glass with ice.",
+        "Add the prosecco, then the Aperol, then the soda.",
+        "Give it a short stir.",
+        "Garnish with an orange slice."
+      ]
+    ),
+    "paloma": createRecipe(
+      "Tequila with a bright grapefruit lift.",
+      ["50ml tequila", "15ml fresh lime juice", "90ml grapefruit soda", "Pinch of salt"],
+      [
+        "Fill a tall glass with ice.",
+        "Add the tequila, lime, and salt.",
+        "Top with grapefruit soda and stir briefly.",
+        "Garnish with a grapefruit wedge if you have one."
+      ]
+    ),
+    "manhattan": createRecipe(
+      "A stirred whiskey classic.",
+      ["60ml whiskey", "30ml sweet vermouth", "2 dashes aromatic bitters"],
+      [
+        "Add all ingredients to a mixing glass with ice.",
+        "Stir until chilled and slightly diluted.",
+        "Strain into a chilled coupe.",
+        "Garnish with a cherry."
+      ]
+    ),
+    "pornstar-martini": createRecipe(
+      "A modern fruity sour with sparkle on the side.",
+      ["40ml vanilla vodka", "20ml passion fruit liqueur", "20ml passion fruit puree", "15ml lime juice", "10ml vanilla syrup", "Sparkling wine on the side"],
+      [
+        "Shake the vodka, liqueur, puree, lime, and syrup with ice.",
+        "Fine strain into a chilled coupe.",
+        "Serve the sparkling wine separately as the side pour."
+      ]
+    ),
+    "penicillin": createRecipe(
+      "Honey, ginger, and smoke.",
+      ["50ml blended Scotch", "20ml fresh lemon juice", "20ml honey-ginger syrup", "10ml smoky Scotch float"],
+      [
+        "Shake the blended Scotch, lemon, and honey-ginger syrup with ice.",
+        "Strain over fresh ice in a rocks glass.",
+        "Float the smoky Scotch on top.",
+        "Garnish with candied ginger if you like."
+      ]
+    ),
+    "boulevardier": createRecipe(
+      "A whiskey-led Negroni variation.",
+      ["30ml whiskey", "30ml Campari", "30ml sweet vermouth"],
+      [
+        "Stir all ingredients with ice until cold.",
+        "Strain over fresh ice in a rocks glass.",
+        "Finish with an orange peel."
+      ]
+    ),
+    "moscow-mule": createRecipe(
+      "Tall, cold, and ginger-led.",
+      ["50ml vodka", "15ml fresh lime juice", "120ml ginger beer"],
+      [
+        "Fill a mug or tall glass with ice.",
+        "Add the vodka and lime juice.",
+        "Top with ginger beer and stir lightly.",
+        "Garnish with lime."
+      ]
+    ),
+    "amaretto-sour": createRecipe(
+      "Sweet almond sharpened with citrus.",
+      ["45ml amaretto", "20ml bourbon", "25ml fresh lemon juice", "10ml simple syrup", "Optional egg white"],
+      [
+        "If using egg white, dry shake first.",
+        "Add ice and shake again until cold.",
+        "Strain over fresh ice or into a coupe.",
+        "Garnish with a cherry or lemon twist."
+      ]
+    ),
+    "mojito": createRecipe(
+      "Fresh mint and lime with a fizzy top.",
+      ["50ml white rum", "25ml fresh lime juice", "15ml sugar syrup", "6 to 8 mint leaves", "Soda water"],
+      [
+        "Lightly muddle the mint with the lime and syrup in a tall glass.",
+        "Add the rum and fill the glass with crushed ice.",
+        "Top with soda water and stir gently from the bottom up.",
+        "Garnish with more mint."
+      ]
+    ),
+    "tequila-shot": createRecipe(
+      "The straight-up classic.",
+      ["25ml tequila", "Salt and lime on the side"],
+      [
+        "Chill the shot glass if you can.",
+        "Pour the tequila neat.",
+        "Serve with salt and lime alongside."
+      ]
+    ),
+    "green-tea-shot": createRecipe(
+      "Sweet, citrusy, and party-friendly.",
+      ["20ml Irish whiskey", "20ml peach schnapps", "20ml sour mix", "Splash of lemon-lime soda"],
+      [
+        "Shake the whiskey, peach schnapps, and sour mix with ice.",
+        "Strain into a shot glass.",
+        "Top with a small splash of lemon-lime soda."
+      ]
+    ),
+    "lemon-drop-shot": createRecipe(
+      "Sweet first, then a quick citrus snap.",
+      ["25ml vodka", "15ml fresh lemon juice", "10ml simple syrup"],
+      [
+        "Shake all ingredients with ice until cold.",
+        "Strain into a shot glass.",
+        "Serve with a sugared rim or a lemon wedge if you want."
+      ]
+    ),
+    "kamikaze": createRecipe(
+      "Short, sharp citrus shot.",
+      ["25ml vodka", "15ml orange liqueur", "15ml fresh lime juice"],
+      [
+        "Shake all ingredients with ice.",
+        "Strain into a chilled shot glass.",
+        "Serve immediately."
+      ]
+    ),
+    "b-52": createRecipe(
+      "A neat layered shooter.",
+      ["15ml coffee liqueur", "15ml Irish cream", "15ml orange liqueur"],
+      [
+        "Pour the coffee liqueur into a shot glass.",
+        "Layer the Irish cream gently over the back of a spoon.",
+        "Layer the orange liqueur on top the same way.",
+        "Serve without disturbing the layers."
+      ]
+    ),
+    "baby-guinness": createRecipe(
+      "Looks like a tiny stout, drinks sweet.",
+      ["20ml coffee liqueur", "10ml Irish cream"],
+      [
+        "Pour the coffee liqueur into a shot glass.",
+        "Float the Irish cream carefully on top using a spoon.",
+        "Serve immediately."
+      ]
+    ),
+    "jager-bomb": createRecipe(
+      "Loud, cold, and immediate.",
+      ["25ml Jagermeister", "125ml energy drink"],
+      [
+        "Pour the energy drink into a rocks glass.",
+        "Fill a shot glass with Jagermeister.",
+        "Drop the shot into the glass and drink immediately."
+      ]
+    ),
+    "fireball-shot": createRecipe(
+      "The easy cinnamon serve.",
+      ["25ml Fireball cinnamon whisky"],
+      [
+        "Chill the bottle or shot glass if possible.",
+        "Pour the whisky straight into the shot glass.",
+        "Serve immediately."
+      ]
+    )
+  };
+
+  function uppercaseFirst(text) {
+    return text ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+  }
+
+  function splitStyleIngredients(style) {
+    return style
+      .replace(/\.$/, "")
+      .replace(/,?\s+and\s+/gi, ", ")
+      .split(/\s*,\s*/)
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) => uppercaseFirst(part));
+  }
+
+  function buildCocktailFallbackMethod(drink) {
+    const name = drink.name.toLowerCase();
+    const style = drink.style.toLowerCase();
+
+    if (/spritz|soda|ginger beer|cola|sparkling wine|prosecco|champagne/.test(style)) {
+      return [
+        "Fill the serving glass with ice.",
+        "Add the listed ingredients, saving the fizzy part until last.",
+        "Give it a short stir and serve immediately."
+      ];
+    }
+
+    if (/egg white|cream/.test(style)) {
+      return [
+        "Add the ingredients to a shaker without ice and dry shake first.",
+        "Add ice and shake again until cold.",
+        "Strain into the serving glass and garnish to suit the drink."
+      ];
+    }
+
+    if (/old fashioned|manhattan|martini|negroni|boulevardier|americano|sazerac|carajillo/.test(name)) {
+      return [
+        "Add the ingredients to a mixing glass with ice.",
+        "Stir until chilled and lightly diluted.",
+        "Strain into the correct glass and garnish to suit the drink."
+      ];
+    }
+
+    if (/mojito|caipirinha|smash|southside|bloody mary/.test(name)) {
+      return [
+        "Build the drink in the serving glass or shaker.",
+        "If herbs or citrus wedges are involved, muddle them lightly first.",
+        "Add ice, mix well, and serve."
+      ];
+    }
+
+    return [
+      "Add the ingredients to a shaker with ice.",
+      "Shake until the drink is properly cold.",
+      "Strain into the serving glass and garnish to suit the drink."
+    ];
+  }
+
+  function buildShotFallbackMethod(drink, ingredients) {
+    const name = drink.name.toLowerCase();
+    const combinedText = `${drink.style} ${drink.note}`.toLowerCase();
+
+    if (/bomb/.test(name)) {
+      return [
+        "Pour the energy drink or beer into a larger glass.",
+        "Fill a shot glass with the spirit mix.",
+        "Drop the shot in and drink immediately."
+      ];
+    }
+
+    if (/b-52|baby guinness|layered|floated/.test(`${name} ${combinedText}`)) {
+      return [
+        "Pour the base ingredient into a shot glass.",
+        "Layer the remaining ingredients gently over the back of a spoon.",
+        "Serve without disturbing the layers."
+      ];
+    }
+
+    if (/served neat|straight|neat|chilled/.test(combinedText)) {
+      return [
+        "Chill the spirit and shot glass if possible.",
+        "Pour straight into the glass.",
+        "Serve immediately."
+      ];
+    }
+
+    if (ingredients.length > 1) {
+      return [
+        "Add the ingredients to a shaker with ice.",
+        "Shake briefly until cold.",
+        "Strain into a shot glass and serve."
+      ];
+    }
+
+    return [
+      "Pour the spirit into a chilled shot glass.",
+      "Serve immediately."
+    ];
+  }
+
+  function buildRecipe(drink, category) {
+    if (drink.custom) {
+      return createRecipe(
+        "Custom drinks do not have a saved house recipe.",
+        ["Ingredients not stored for this custom entry"],
+        ["Use your own ingredient list and method for this custom drink."]
+      );
+    }
+
+    if (drink.sourceId && RECIPE_OVERRIDES[drink.sourceId]) {
+      return RECIPE_OVERRIDES[drink.sourceId];
+    }
+
+    const ingredients = splitStyleIngredients(drink.style);
+    return createRecipe(
+      category === "shots" ? "Simple house shot build." : "Simple house cocktail build.",
+      ingredients,
+      category === "shots"
+        ? buildShotFallbackMethod(drink, ingredients)
+        : buildCocktailFallbackMethod(drink)
+    );
+  }
+
   const SPIN_DURATION_MS = 4800;
   const POINTER_TARGET_DEGREES = 90;
   const MAX_DEVICE_PIXEL_RATIO = 2;
@@ -203,6 +562,11 @@
     resultName: document.getElementById("result-name"),
     resultStyle: document.getElementById("result-style"),
     resultNote: document.getElementById("result-note"),
+    recipeToggle: document.getElementById("recipe-toggle"),
+    recipePanel: document.getElementById("recipe-panel"),
+    recipeSummary: document.getElementById("recipe-summary"),
+    recipeIngredients: document.getElementById("recipe-ingredients"),
+    recipeMethod: document.getElementById("recipe-method"),
     resultBadge: document.getElementById("result-badge"),
     resultCount: document.getElementById("result-count"),
     lineupLabel: document.getElementById("lineup-label"),
@@ -230,6 +594,7 @@
     category: elements.wheelSelect.value,
     rotation: 0,
     winnerIndex: null,
+    recipeOpen: false,
     spinning: false,
     spinTimeoutId: null,
     lineups: {
@@ -511,6 +876,37 @@
     });
   }
 
+  function fillRecipeList(container, entries) {
+    container.innerHTML = "";
+    entries.forEach((entry) => {
+      const item = document.createElement("li");
+      item.textContent = entry;
+      container.appendChild(item);
+    });
+  }
+
+  function renderRecipePanel(winner) {
+    const canShowRecipe = Boolean(winner) && !state.spinning;
+
+    elements.recipeToggle.disabled = !canShowRecipe;
+    elements.recipeToggle.textContent = state.recipeOpen ? "Hide recipe" : "How to make it";
+    elements.recipeToggle.setAttribute("aria-expanded", canShowRecipe && state.recipeOpen ? "true" : "false");
+
+    if (!canShowRecipe) {
+      elements.recipePanel.hidden = true;
+      elements.recipeSummary.textContent = "";
+      elements.recipeIngredients.innerHTML = "";
+      elements.recipeMethod.innerHTML = "";
+      return;
+    }
+
+    const recipe = buildRecipe(winner, state.category);
+    elements.recipeSummary.textContent = recipe.summary;
+    fillRecipeList(elements.recipeIngredients, recipe.ingredients);
+    fillRecipeList(elements.recipeMethod, recipe.method);
+    elements.recipePanel.hidden = !state.recipeOpen;
+  }
+
   function renderResultPanel() {
     const config = getConfig();
     const modified = isLineupModified(state.category);
@@ -524,6 +920,7 @@
       elements.resultStyle.textContent = `${config.label} wheel is in motion.`;
       elements.resultNote.textContent = "Hold the pointer and let the stop decide the pour.";
       elements.resultCount.textContent = `${config.slotCount} drinks`;
+      renderRecipePanel(null);
       return;
     }
 
@@ -532,6 +929,7 @@
       elements.resultStyle.textContent = modified ? `Custom ${config.singular} lineup is loaded with ${config.slotCount} slots.` : `${config.label} wheel is loaded with ${config.slotCount} popular picks.`;
       elements.resultNote.textContent = modified ? "Edit any slot, shuffle again, or reset back to the defaults." : "Shuffle from the larger library, edit any slot, or type your own drink.";
       elements.resultCount.textContent = `${config.slotCount} drinks`;
+      renderRecipePanel(null);
       return;
     }
 
@@ -539,6 +937,7 @@
     elements.resultStyle.textContent = winner.style;
     elements.resultNote.textContent = winner.note;
     elements.resultCount.textContent = `Winner ${String(state.winnerIndex + 1).padStart(2, "0")} / ${config.slotCount}`;
+    renderRecipePanel(winner);
   }
 
   function syncControls() {
@@ -678,6 +1077,7 @@
 
   function handleLineupMutation() {
     state.winnerIndex = null;
+    state.recipeOpen = false;
     state.rotation = 0;
     applyRotation(true);
     renderAll();
@@ -735,6 +1135,7 @@
     state.category = category;
     state.rotation = 0;
     state.winnerIndex = null;
+    state.recipeOpen = false;
     state.spinning = false;
     applyRotation(true);
     renderAll();
@@ -766,6 +1167,7 @@
 
     state.spinning = true;
     state.winnerIndex = null;
+    state.recipeOpen = false;
     state.rotation += (5 + Math.floor(Math.random() * 3)) * 360 + delta;
     renderResultPanel();
     syncControls();
@@ -792,6 +1194,14 @@
       event.preventDefault();
       spinWheel();
     }
+  });
+  elements.recipeToggle.addEventListener("click", () => {
+    if (elements.recipeToggle.disabled) {
+      return;
+    }
+
+    state.recipeOpen = !state.recipeOpen;
+    renderResultPanel();
   });
   elements.shuffleButton.addEventListener("click", shuffleCurrentLineup);
   elements.resetButton.addEventListener("click", resetCurrentLineup);

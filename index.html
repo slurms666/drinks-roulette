@@ -71,6 +71,22 @@
           <h2 id="result-name">Ready to spin</h2>
           <p id="result-style" class="result-style">Cocktails wheel is loaded with 16 popular classics.</p>
           <p id="result-note" class="result-note">Pick a wheel from the dropdown, then hit spin.</p>
+          <button id="recipe-toggle" class="ghost-button recipe-toggle" type="button" aria-expanded="false">
+            How to make it
+          </button>
+          <section id="recipe-panel" class="recipe-panel" hidden aria-label="Drink recipe">
+            <p id="recipe-summary" class="recipe-summary"></p>
+            <div class="recipe-grid">
+              <div class="recipe-block">
+                <p class="recipe-label">Ingredients</p>
+                <ul id="recipe-ingredients" class="recipe-list"></ul>
+              </div>
+              <div class="recipe-block">
+                <p class="recipe-label">Method</p>
+                <ol id="recipe-method" class="recipe-list recipe-list-numbered"></ol>
+              </div>
+            </div>
+          </section>
           <div class="result-meta">
             <span id="result-badge" class="pill">Cocktails</span>
             <span id="result-count" class="pill pill-muted">16 drinks</span>
