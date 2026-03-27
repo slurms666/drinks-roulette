@@ -17,6 +17,7 @@
   --panel-radius: clamp(22px, 3vw, 30px);
   --card-padding: clamp(18px, 2.6vw, 24px);
   --wheel-stage-size: clamp(320px, 64vw, 620px);
+  --wheel-disc-size: min(100%, clamp(280px, 52vw, 560px));
 }
 
 body[data-wheel="shots"] {
@@ -332,7 +333,7 @@ select:disabled {
 .pointer {
   position: absolute;
   top: 50%;
-  right: clamp(8px, 2vw, 18px);
+  right: calc(50% - (var(--wheel-disc-size) / 2) + clamp(2px, 0.5vw, 8px));
   z-index: 3;
   width: 0;
   height: 0;
@@ -351,7 +352,7 @@ select:disabled {
 .wheel-disc {
   position: relative;
   z-index: 2;
-  width: min(100%, clamp(280px, 52vw, 560px));
+  width: var(--wheel-disc-size);
   aspect-ratio: 1;
   padding: clamp(10px, 1.8vw, 16px);
   border-radius: 50%;

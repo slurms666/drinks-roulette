@@ -396,9 +396,10 @@
     const center = size / 2;
     const outerRadius = center - Math.max(10, 18 * pixelRatio);
     const innerRadius = size * 0.18;
-    const labelRadius = innerRadius + (outerRadius - innerRadius) * (count > 12 ? 0.6 : 0.57);
+    const labelRadius = innerRadius + (outerRadius - innerRadius) * (count > 12 ? 0.61 : 0.59);
     const fontSize = Math.round((count > 12 ? Math.max(13, displaySize * 0.042) : Math.max(17, displaySize * 0.058)) * pixelRatio);
-    const labelWidth = Math.max(44 * pixelRatio, sliceAngle * labelRadius * 0.96);
+    const radialLabelWidth = outerRadius - innerRadius - Math.max(18 * pixelRatio, size * 0.03);
+    const labelWidth = Math.max(44 * pixelRatio, radialLabelWidth);
 
     ctx.clearRect(0, 0, size, size);
     ctx.save();
@@ -427,7 +428,7 @@
 
       ctx.save();
       ctx.translate(x, y);
-      ctx.rotate(labelAngle - Math.PI / 2);
+      ctx.rotate(labelAngle);
       ctx.fillStyle = "#fff7ee";
       ctx.strokeStyle = "rgba(24, 12, 19, 0.28)";
       ctx.lineWidth = Math.max(1.5 * pixelRatio, fittedLabel.fontSize * 0.08);
