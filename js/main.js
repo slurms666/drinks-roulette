@@ -603,6 +603,15 @@
     }
   };
   let resizeFrameId = 0;
+  let suppressWheelClick = false;
+  const wheelSwipe = {
+    active: false,
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    startAngle: 0,
+    startedAt: 0
+  };
 
   function getConfig(category) {
     return CATEGORIES[category || state.category];
@@ -752,6 +761,14 @@
     return minFontSize;
   }
 
+  function strokeCircle(radius, width, color) {
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.lineWidth = width;
+    ctx.strokeStyle = color;
+    ctx.stroke();
+  }
+
   function drawWheel() {
     const config = getConfig();
     const lineup = getLineup();
@@ -761,15 +778,29 @@
     const center = size / 2;
     const outerRadius = center - Math.max(10, 18 * pixelRatio);
     const innerRadius = size * 0.18;
-    const labelRadius = innerRadius + (outerRadius - innerRadius) * (count > 12 ? 0.61 : 0.59);
-    const fontSize = Math.round((count > 12 ? Math.max(13, displaySize * 0.042) : Math.max(17, displaySize * 0.058)) * pixelRatio);
-    const radialLabelWidth = outerRadius - innerRadius - Math.max(18 * pixelRatio, size * 0.03);
+    const labelRadius = innerRadius + (outerRadius - innerRadius) * (count > 12 ? 0.54 : 0.55);
+    const fontSize = Math.round((count > 12 ? Math.max(12, displaySize * 0.037) : Math.max(16, displaySize * 0.052)) * pixelRatio);
+    const radialLabelWidth = (outerRadius - innerRadius) * 0.82;
     const labelWidth = Math.max(44 * pixelRatio, radialLabelWidth);
 
     ctx.clearRect(0, 0, size, size);
     ctx.save();
     ctx.translate(center, center);
     setWheelFont(fontSize);
+
+    const tableFill = ctx.createRadialGradient(0, 0, innerRadius * 0.4, 0, 0, outerRadius * 1.04);
+    tableFill.addColorStop(0, "rgba(255, 255, 255, 0.08)");
+    tableFill.addColorStop(0.54, "rgba(21, 11, 18, 0.18)");
+    tableFill.addColorStop(1, "rgba(5, 4, 7, 0.72)");
+
+    ctx.beginPath();
+    ctx.arc(0, 0, outerRadius + 8 * pixelRatio, 0, Math.PI * 2);
+    ctx.fillStyle = tableFill;
+    ctx.fill();
+
+    strokeCircle(outerRadius + 11 * pixelRatio, Math.max(2 * pixelRatio, size * 0.004), "rgba(241, 198, 106, 0.36)");
+    strokeCircle(outerRadius + 3 * pixelRatio, Math.max(5 * pixelRatio, size * 0.013), "rgba(18, 11, 13, 0.84)");
+    strokeCircle(outerRadius - 7 * pixelRatio, Math.max(2 * pixelRatio, size * 0.005), "rgba(255, 245, 200, 0.28)");
 
     lineup.forEach((drink, index) => {
       const startAngle = -Math.PI / 2 - sliceAngle / 2 + index * sliceAngle;
@@ -788,7 +819,24 @@
       ctx.fillStyle = config.palette[index % config.palette.length];
       ctx.fill();
       ctx.lineWidth = Math.max(2 * pixelRatio, size * 0.0044);
-      ctx.strokeStyle = "rgba(15, 10, 15, 0.34)";
+      ctx.strokeStyle = "rgba(18, 11, 14, 0.58)";
+      ctx.stroke();
+
+      ctx.save();
+      ctx.clip();
+      const pocketShine = ctx.createRadialGradient(-outerRadius * 0.25, -outerRadius * 0.35, innerRadius * 0.2, 0, 0, outerRadius);
+      pocketShine.addColorStop(0, "rgba(255, 255, 255, 0.32)");
+      pocketShine.addColorStop(0.5, "rgba(255, 255, 255, 0.06)");
+      pocketShine.addColorStop(1, "rgba(0, 0, 0, 0.2)");
+      ctx.fillStyle = pocketShine;
+      ctx.fillRect(-outerRadius, -outerRadius, outerRadius * 2, outerRadius * 2);
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(startAngle) * innerRadius * 0.94, Math.sin(startAngle) * innerRadius * 0.94);
+      ctx.lineTo(Math.cos(startAngle) * outerRadius, Math.sin(startAngle) * outerRadius);
+      ctx.lineWidth = Math.max(1.4 * pixelRatio, size * 0.003);
+      ctx.strokeStyle = "rgba(241, 198, 106, 0.42)";
       ctx.stroke();
 
       ctx.save();
@@ -810,23 +858,38 @@
       ctx.restore();
     });
 
-    ctx.beginPath();
-    ctx.arc(0, 0, outerRadius + 2, 0, Math.PI * 2);
-    ctx.lineWidth = Math.max(7 * pixelRatio, size * 0.017);
-    ctx.strokeStyle = "rgba(12, 8, 10, 0.62)";
-    ctx.stroke();
+    for (let index = 0; index < count; index += 1) {
+      const dotAngle = -Math.PI / 2 - sliceAngle / 2 + index * sliceAngle;
+      const dotRadius = outerRadius - 4 * pixelRatio;
+      const dotX = Math.cos(dotAngle) * dotRadius;
+      const dotY = Math.sin(dotAngle) * dotRadius;
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, Math.max(2.2 * pixelRatio, size * 0.0048), 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255, 235, 176, 0.78)";
+      ctx.fill();
+      ctx.lineWidth = Math.max(0.9 * pixelRatio, size * 0.0018);
+      ctx.strokeStyle = "rgba(72, 42, 10, 0.62)";
+      ctx.stroke();
+    }
+
+    strokeCircle(outerRadius + 2, Math.max(7 * pixelRatio, size * 0.017), "rgba(12, 8, 10, 0.74)");
+    strokeCircle(outerRadius - 13 * pixelRatio, Math.max(2 * pixelRatio, size * 0.004), "rgba(241, 198, 106, 0.34)");
+    strokeCircle(innerRadius + 7 * pixelRatio, Math.max(2 * pixelRatio, size * 0.0042), "rgba(80, 44, 19, 0.5)");
+    strokeCircle(innerRadius - 2 * pixelRatio, Math.max(5 * pixelRatio, size * 0.012), "rgba(241, 198, 106, 0.46)");
 
     const centerFill = ctx.createRadialGradient(0, 0, innerRadius * 0.18, 0, 0, innerRadius * 1.2);
     centerFill.addColorStop(0, "#fffbf3");
-    centerFill.addColorStop(1, "#deb690");
+    centerFill.addColorStop(0.52, "#ead1a4");
+    centerFill.addColorStop(1, "#9f6831");
 
     ctx.beginPath();
     ctx.arc(0, 0, innerRadius, 0, Math.PI * 2);
     ctx.fillStyle = centerFill;
     ctx.fill();
     ctx.lineWidth = Math.max(4 * pixelRatio, size * 0.011);
-    ctx.strokeStyle = "rgba(14, 10, 12, 0.28)";
+    ctx.strokeStyle = "rgba(14, 10, 12, 0.36)";
     ctx.stroke();
+    strokeCircle(innerRadius * 0.78, Math.max(1.5 * pixelRatio, size * 0.0032), "rgba(255, 245, 218, 0.42)");
 
     const hubText = config.label.toUpperCase();
     const hubTitleSize = getHubTitleSize(
@@ -1149,7 +1212,7 @@
     applyRotation(true);
   }
 
-  function spinWheel() {
+  function spinWheel(extraTurns = 0) {
     if (state.spinning) {
       return;
     }
@@ -1168,7 +1231,7 @@
     state.spinning = true;
     state.winnerIndex = null;
     state.recipeOpen = false;
-    state.rotation += (5 + Math.floor(Math.random() * 3)) * 360 + delta;
+    state.rotation += (5 + Math.floor(Math.random() * 3) + extraTurns) * 360 + delta;
     renderResultPanel();
     syncControls();
     applyRotation(false);
@@ -1184,11 +1247,81 @@
     }, SPIN_DURATION_MS);
   }
 
+  function getPointerAngle(event) {
+    const rect = elements.wheelDisc.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    return Math.atan2(event.clientY - centerY, event.clientX - centerX);
+  }
+
+  function normaliseRadians(value) {
+    return Math.atan2(Math.sin(value), Math.cos(value));
+  }
+
+  function beginWheelSwipe(event) {
+    if (state.spinning || event.button > 0) {
+      return;
+    }
+
+    wheelSwipe.active = true;
+    wheelSwipe.pointerId = event.pointerId;
+    wheelSwipe.startX = event.clientX;
+    wheelSwipe.startY = event.clientY;
+    wheelSwipe.startAngle = getPointerAngle(event);
+    wheelSwipe.startedAt = performance.now();
+
+    if (elements.wheelDisc.setPointerCapture) {
+      elements.wheelDisc.setPointerCapture(event.pointerId);
+    }
+  }
+
+  function cancelWheelSwipe() {
+    wheelSwipe.active = false;
+    wheelSwipe.pointerId = null;
+  }
+
+  function endWheelSwipe(event) {
+    if (!wheelSwipe.active || wheelSwipe.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const deltaX = event.clientX - wheelSwipe.startX;
+    const deltaY = event.clientY - wheelSwipe.startY;
+    const distance = Math.hypot(deltaX, deltaY);
+    const duration = Math.max(120, performance.now() - wheelSwipe.startedAt);
+    const angularDistance = Math.abs(normaliseRadians(getPointerAngle(event) - wheelSwipe.startAngle));
+    const swipeStrength = Math.min(4, Math.floor((distance / 70) + (angularDistance * 1.4) + (420 / duration)));
+    const shouldSpin = distance > 34 || angularDistance > 0.42;
+
+    cancelWheelSwipe();
+
+    if (!shouldSpin) {
+      return;
+    }
+
+    suppressWheelClick = true;
+    window.setTimeout(() => {
+      suppressWheelClick = false;
+    }, 450);
+    spinWheel(swipeStrength);
+  }
+
   elements.wheelSelect.addEventListener("change", (event) => {
     setCategory(event.target.value);
   });
-  elements.spinButton.addEventListener("click", spinWheel);
-  elements.wheelDisc.addEventListener("click", spinWheel);
+  elements.spinButton.addEventListener("click", () => spinWheel());
+  elements.wheelDisc.addEventListener("pointerdown", beginWheelSwipe);
+  elements.wheelDisc.addEventListener("pointerup", endWheelSwipe);
+  elements.wheelDisc.addEventListener("pointercancel", cancelWheelSwipe);
+  elements.wheelDisc.addEventListener("lostpointercapture", cancelWheelSwipe);
+  elements.wheelDisc.addEventListener("click", (event) => {
+    if (suppressWheelClick) {
+      event.preventDefault();
+      return;
+    }
+
+    spinWheel();
+  });
   elements.wheelDisc.addEventListener("keydown", (event) => {
     if (event.code === "Space" || event.code === "Enter") {
       event.preventDefault();

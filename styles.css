@@ -6,6 +6,9 @@
   --panel: rgba(33, 18, 29, 0.74);
   --panel-border: rgba(255, 255, 255, 0.11);
   --panel-strong: rgba(255, 255, 255, 0.16);
+  --gold: #f1c66a;
+  --gold-deep: #9b6528;
+  --ivory: #fff3d1;
   --accent: #ff9d5c;
   --accent-strong: #ff5c76;
   --accent-soft: rgba(255, 157, 92, 0.16);
@@ -48,37 +51,32 @@ body {
   color: var(--ink);
   font-family: Georgia, "Times New Roman", serif;
   background:
-    radial-gradient(circle at 15% 10%, rgba(255, 173, 96, 0.15), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(99, 185, 255, 0.1), transparent 28%),
-    radial-gradient(circle at 50% 120%, rgba(255, 90, 110, 0.16), transparent 34%),
+    linear-gradient(90deg, rgba(241, 198, 106, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 18px),
     linear-gradient(180deg, var(--bg-top) 0%, #110910 44%, var(--bg-bottom) 100%);
+  background-size: 54px 54px, 54px 54px, auto, auto;
 }
 
 body::before,
 body::after {
   content: "";
   position: fixed;
-  inset: auto;
+  inset: 0;
   pointer-events: none;
-  border-radius: 999px;
-  filter: blur(14px);
-  opacity: 0.7;
 }
 
 body::before {
-  top: 6vh;
-  right: -6rem;
-  width: 18rem;
-  height: 18rem;
-  background: radial-gradient(circle, rgba(255, 136, 73, 0.3), transparent 68%);
+  border: 1px solid rgba(241, 198, 106, 0.06);
+  box-shadow: inset 0 0 160px rgba(0, 0, 0, 0.52);
 }
 
 body::after {
-  left: -7rem;
-  bottom: 6vh;
-  width: 20rem;
-  height: 20rem;
-  background: radial-gradient(circle, rgba(126, 226, 211, 0.22), transparent 72%);
+  opacity: 0.16;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 34px, rgba(241, 198, 106, 0.16) 34px 35px),
+    repeating-linear-gradient(0deg, transparent 0 34px, rgba(241, 198, 106, 0.12) 34px 35px);
+  mask-image: linear-gradient(180deg, transparent, #000 16%, #000 82%, transparent);
 }
 
 .page-shell {
@@ -181,12 +179,16 @@ h1 {
 .result-card,
 .lineup-card,
 .note-card {
-  border: 1px solid var(--panel-border);
+  border: 1px solid rgba(241, 198, 106, 0.18);
   border-radius: var(--panel-radius);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 30%),
+    linear-gradient(135deg, rgba(241, 198, 106, 0.07), transparent 28%, rgba(255, 92, 118, 0.04) 72%, transparent),
     var(--panel);
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.2),
+    var(--shadow-lg);
   backdrop-filter: blur(14px);
 }
 
@@ -320,8 +322,8 @@ select:disabled {
   border-radius: 34px;
   overflow: hidden;
   background:
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 42%),
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.03), transparent 66%),
+    conic-gradient(from 45deg, rgba(241, 198, 106, 0.08), transparent 18%, rgba(127, 226, 211, 0.08), transparent 56%, rgba(255, 92, 118, 0.08), rgba(241, 198, 106, 0.08)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 22px),
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(8, 6, 9, 0.14));
 }
 
@@ -334,16 +336,22 @@ select:disabled {
 }
 
 .wheel-stage::before {
-  width: 68%;
-  height: 68%;
-  background: radial-gradient(circle, var(--accent-soft), transparent 68%);
+  width: 92%;
+  height: 92%;
+  border: 1px solid rgba(241, 198, 106, 0.12);
+  box-shadow:
+    inset 0 0 0 8px rgba(0, 0, 0, 0.12),
+    inset 0 0 36px rgba(241, 198, 106, 0.08);
+  background:
+    conic-gradient(from 0deg, transparent 0 12deg, rgba(241, 198, 106, 0.055) 12deg 14deg, transparent 14deg 30deg);
   animation: halo-breathe 4.4s ease-in-out infinite;
 }
 
 .wheel-stage::after {
-  width: 84%;
-  height: 84%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 78%;
+  height: 78%;
+  border: 1px solid rgba(241, 198, 106, 0.16);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
 }
 
 .pointer {
@@ -358,8 +366,10 @@ select:disabled {
   border-top: clamp(14px, 2vw, 22px) solid transparent;
   border-bottom: clamp(14px, 2vw, 22px) solid transparent;
   border-left: 0;
-  border-right: clamp(30px, 4vw, 44px) solid var(--highlight);
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.32));
+  border-right: clamp(30px, 4vw, 44px) solid var(--gold);
+  filter:
+    drop-shadow(0 0 0 rgba(65, 41, 9, 0.8))
+    drop-shadow(0 5px 10px rgba(0, 0, 0, 0.45));
 }
 
 .pointer::after {
@@ -371,20 +381,24 @@ select:disabled {
   z-index: 2;
   width: var(--wheel-disc-size);
   aspect-ratio: 1;
-  padding: clamp(10px, 1.8vw, 16px);
+  padding: clamp(12px, 2vw, 20px);
   border-radius: 50%;
   background:
-    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.22), transparent 28%),
-    radial-gradient(circle at 70% 78%, rgba(255, 255, 255, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(12, 8, 12, 0.12));
+    conic-gradient(from 0deg, rgba(241, 198, 106, 0.24), rgba(255, 255, 255, 0.05), rgba(155, 101, 40, 0.34), rgba(241, 198, 106, 0.24)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(12, 8, 12, 0.18));
   box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.08),
-    inset 0 0 0 22px rgba(13, 8, 11, 0.5),
+    inset 0 0 0 2px rgba(255, 245, 200, 0.15),
+    inset 0 0 0 9px rgba(28, 13, 18, 0.75),
+    inset 0 0 0 17px rgba(241, 198, 106, 0.18),
+    inset 0 0 26px rgba(0, 0, 0, 0.42),
     0 26px 54px rgba(0, 0, 0, 0.32);
   transition: transform 4.8s cubic-bezier(0.12, 0.82, 0.16, 1);
   will-change: transform;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .wheel-disc:focus-visible {
